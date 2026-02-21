@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuestro Libro de Amor - Sammy & Fabián</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #9b7cb6;
+  --secondary-color: #d4a5a5;
+  --accent-color: #f9e79f;
+  --text-dark: #2c3e50;
+  --paper-color: #fdfbf7;
+}
+
+/* FONDO GALAXIA ANIMADO */
+body {
+  min-height: 100vh;
+  font-family: 'Cormorant Garamond', serif;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
+
+.galaxy-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000"><rect fill="%23090a0f" width="2000" height="2000"/><circle fill="%23FFF" opacity="0.3" cx="200" cy="200" r="1"/><circle fill="%23FFF" opacity="0.3" cx="800" cy="400" r="1.5"/><circle fill="%23FFF" opacity="0.3" cx="1500" cy="300" r="1"/><circle fill="%23FFF" opacity="0.3" cx="1200" cy="800" r="2"/><circle fill="%23FFF" opacity="0.3" cx="1600" cy="600" r="1.5"/><circle fill="%23FFF" opacity="0.3" cx="400" cy="900" r="1"/><circle fill="%23FFF" opacity="0.3" cx="1000" cy="1200" r="1.5"/><circle fill="%23FFF" opacity="0.3" cx="1800" cy="1000" r="1"/><circle fill="%23FFF" opacity="0.3" cx="600" cy="1500" r="2"/><circle fill="%23FFF" opacity="0.3" cx="1400" cy="1600" r="1.5"/><circle fill="%23FFF" opacity="0.3" cx="300" cy="1700" r="1"/><circle fill="%23FFF" opacity="0.3" cx="900" cy="1800" r="1.5"/></svg>');
+  z-index: -2;
+}
+
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle var(--duration) ease-in-out infinite;
+  opacity: var(--opacity);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: var(--opacity); transform: scale(1); }
+  50% { opacity: 0.2; transform: scale(0.8); }
+}
+
+/* Nebulosas animadas */
+.nebula {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: float 20s ease-in-out infinite;
+  z-index: -1;
+}
+
+.nebula-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(155, 124, 182, 0.6) 0%, transparent 70%);
+  top: -200px;
+  left: -100px;
+  animation-delay: 0s;
+}
+
+.nebula-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(118, 75, 162, 0.5) 0%, transparent 70%);
+  bottom: -150px;
+  right: -100px;
+  animation-delay: -10s;
+}
+
+.nebula-3 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(212, 165, 165, 0.4) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -5s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+/* Shooting stars */
+.shooting-star {
+  position: fixed;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, white, transparent);
+  animation: shoot 3s linear infinite;
+  opacity: 0;
+  z-index: -1;
+}
+
+@keyframes shoot {
+  0% { transform: translateX(-100px) rotate(-45deg); opacity: 0; }
+  10% { opacity: 1; }
+  20% { transform: translateX(100vw) rotate(-45deg); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Intro Overlay */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(9, 10, 15, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  transition: opacity 1.5s ease, visibility 1.5s;
+  backdrop-filter: blur(10px);
+}
+
+.heart-beat {
+  font-size: 80px;
+  animation: heartbeat 1.5s ease-in-out infinite;
+  margin-bottom: 30px;
+  filter: drop-shadow(0 0 30px rgba(155, 124, 182, 0.8));
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.05); }
+}
+
+.intro-text {
+  color: #fff;
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.5em;
+  margin-bottom: 40px;
+  text-align: center;
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards 0.5s;
+  text-shadow: 0 0 30px rgba(155, 124, 182, 0.8);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.start-btn {
+  padding: 20px 60px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3em;
+  color: white;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  border-radius: 50px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards 1s;
+  box-shadow: 0 0 20px rgba(155, 124, 182, 0.3);
+}
+
+.start-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(155, 124, 182, 0.4), transparent);
+  transition: left 0.6s;
+}
+
+.start-btn:hover::before {
+  left: 100%;
+}
+
+.start-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(155, 124, 182, 0.6);
+  border-color: #b8a0d0;
+}
+
+/* Floating Hearts */
+.floating-hearts {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.6);
+  animation: float-up linear infinite;
+  bottom: -100px;
+  filter: drop-shadow(0 0 10px rgba(155, 124, 182, 0.8));
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(720deg) scale(0.3);
+    opacity: 0;
+  }
+}
+
+/* Main Scene */
+.scene {
+  perspective: 3000px;
+  width: 100%;
+  height: 100vh;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.book {
+  width: 900px;
+  height: 600px;
+  position: relative;
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
+}
+
+.sheet {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  right: 0;
+  transform-origin: left center;
+  transition: transform 1.5s cubic-bezier(.645, .045, .355, 1);
+  transform-style: preserve-3d;
+  z-index: 1;
+}
+
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--paper-color);
+  background-image: 
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 25px 25px;
+  box-shadow: 
+    inset 30px 0 40px -30px rgba(0,0,0,0.1),
+    inset 0 0 80px rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 0 8px 8px 0;
+  overflow: hidden;
+}
+
+.face.back {
+  transform: rotateY(180deg);
+  background: #f5f2ed;
+  border-radius: 8px 0 0 8px;
+  box-shadow: 
+    inset -30px 0 40px -30px rgba(0,0,0,0.1),
+    inset 0 0 80px rgba(0,0,0,0.03);
+}
+
+.sheet.flip {
+  transform: rotateY(-180deg);
+}
+
+/* PORTADA CON IMAGEN sam.jpg */
+.cover-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('sam.jpg');
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.cover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%);
+  z-index: 1;
+}
+
+.cover-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+}
+
+.cover-page h1 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 4.5em;
+  color: white;
+  margin-bottom: 20px;
+  text-shadow: 3px 3px 15px rgba(0,0,0,0.8);
+  line-height: 1.1;
+}
+
+.cover-page p {
+  color: rgba(255,255,255,0.95);
+  font-size: 1.6em;
+  background: rgba(0,0,0,0.4);
+  padding: 25px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+h2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.8em;
+  color: var(--secondary-color);
+  margin-bottom: 25px;
+}
+
+p {
+  font-size: 1.35em;
+  line-height: 2;
+  color: var(--text-dark);
+  max-width: 85%;
+  font-family: 'Playfair Display', serif;
+}
+
+.quote {
+  font-style: italic;
+  color: #666;
+  border-left: 4px solid var(--primary-color);
+  padding-left: 25px;
+  margin: 25px 0;
+  text-align: left;
+  background: rgba(155, 124, 182, 0.05);
+  padding: 20px 20px 20px 25px;
+  border-radius: 0 10px 10px 0;
+  position: relative;
+}
+
+.quote::before {
+  content: '"';
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  font-size: 3em;
+  color: var(--primary-color);
+  opacity: 0.3;
+  font-family: 'Playfair Display', serif;
+}
+
+.illustration {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  margin: 25px 0;
+  filter: drop-shadow(0 10px 25px rgba(0,0,0,0.15));
+  transition: all 0.4s ease;
+}
+
+.illustration:hover {
+  transform: scale(1.08) rotate(-2deg);
+  filter: drop-shadow(0 15px 35px rgba(0,0,0,0.2));
+}
+
+.final-page {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%) !important;
+}
+
+.final-message {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.4em;
+  color: var(--primary-color);
+  margin: 25px 0;
+  min-height: 80px;
+}
+
+.typing-text::after {
+  content: '|';
+  animation: blink 1s infinite;
+  color: var(--primary-color);
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.corner-decoration {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border: 3px solid var(--primary-color);
+  opacity: 0.25;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.sheet:hover .corner-decoration {
+  opacity: 0.4;
+  transform: scale(1.1);
+}
+
+.corner-tl { top: 25px; left: 25px; border-right: none; border-bottom: none; border-radius: 10px 0 0 0; }
+.corner-tr { top: 25px; right: 25px; border-left: none; border-bottom: none; border-radius: 0 10px 0 0; }
+.corner-bl { bottom: 25px; left: 25px; border-right: none; border-top: none; border-radius: 0 0 0 10px; }
+.corner-br { bottom: 25px; right: 25px; border-left: none; border-top: none; border-radius: 0 0 10px 0; }
+
+.arrow {
+  position: fixed;
+  bottom: 50px;
+  font-size: 2.2em;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s ease;
+  z-index: 500;
+  width: 65px;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255,255,255,0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  text-shadow: 0 0 10px rgba(155, 124, 182, 0.8);
+}
+
+.arrow:hover {
+  transform: scale(1.15);
+  background: rgba(255,255,255,0.25);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3), 0 0 30px rgba(155, 124, 182, 0.5);
+}
+
+#prev { left: 40px; }
+#next { right: 40px; }
+
+.page-indicator {
+  position: fixed;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2em;
+  opacity: 0.9;
+  background: rgba(0,0,0,0.4);
+  padding: 12px 25px;
+  border-radius: 25px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.2);
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(155, 124, 182, 0.8);
+}
+
+.glow {
+  animation: glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { box-shadow: inset 0 0 30px rgba(155, 124, 182, 0.2); }
+  to { box-shadow: inset 0 0 60px rgba(155, 124, 182, 0.4); }
+}
+
+@media (max-width: 950px) {
+  .book {
+    width: 95vw;
+    height: 70vh;
+  }
+  
+  .cover-page h1 { font-size: 3em; }
+  h2 { font-size: 2em; }
+  p { font-size: 1.15em; }
+  
+  .illustration {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .corner-decoration {
+    width: 50px;
+    height: 50px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- FONDO GALAXIA -->
+<div class="galaxy-bg"></div>
+<div class="stars" id="starsContainer"></div>
+<div class="nebula nebula-1"></div>
+<div class="nebula nebula-2"></div>
+<div class="nebula nebula-3"></div>
+
+<!-- Intro Overlay -->
+<div id="overlay">
+  <div class="heart-beat">💜</div>
+  <div class="intro-text">Para mi amada Sammy Rizitos...</div>
+  <button class="start-btn" onclick="startApp()">Comenzar Nuestra Historia 📖</button>
+</div>
+
+<!-- Floating Hearts -->
+<div class="floating-hearts" id="heartsContainer"></div>
+
+<!-- Audio -->
+<audio id="bgMusic" src="https://raw.githubusercontent.com/fabidz13/Canciones/main/Ben%20E.%20King%20%20Stand%20By%20Me.mp3" preload="auto" loop></audio>
+<audio id="flipSound" src="page.mp3" preload="auto"></audio>
+
+<!-- Main Scene -->
+<div class="scene" id="mainScene">
+  <div class="book">
+
+    <!-- HOJA 1: PORTADA CON sam.jpg -->
+    <div class="sheet" id="s1">
+      <div class="face cover-page" style="padding: 0; overflow: hidden;">
+        <div class="cover-image"></div>
+        <div class="cover-overlay"></div>
+        <div class="cover-content">
+          <div class="corner-decoration corner-tl" style="border-color: white; opacity: 0.4;"></div>
+          <div class="corner-decoration corner-tr" style="border-color: white; opacity: 0.4;"></div>
+          <div class="corner-decoration corner-bl" style="border-color: white; opacity: 0.4;"></div>
+          <div class="corner-decoration corner-br" style="border-color: white; opacity: 0.4;"></div>
+          <h1>Para Sammy<br>Mi Amorcito</h1>
+          <p>Un universo entero escrito<br>con tinta de amor infinito</p>
+          <div style="margin-top: 40px; font-size: 3.5em; animation: heartbeat 2s infinite;">✨💜✨</div>
+        </div>
+      </div>
+      <div class="face back">
+        <img class="illustration" src="puccaygaru.gif" alt="Nosotros">
+        <p style="font-style: italic; color: #666; font-size: 1.3em;">"Como Pucca persigue a Garu,<br>yo persigo tu felicidad<br>en cada amanecer..."</p>
+      </div>
+    </div>
+
+    <!-- HOJA 2 -->
+    <div class="sheet" id="s2">
+      <div class="face">
+        <div class="corner-decoration corner-tl"></div>
+        <div class="corner-decoration corner-br"></div>
+        <p class="quote">"El destino no tiene horario,<br>llega cuando el corazón<br>ya está listo para reconocerlo."</p>
+        <p>Desde que llegaste, el tiempo<br>dejó de medirse en horas...<br>y pasó a medirse en sonrisas tuyas.</p>
+      </div>
+      <div class="face back">
+        <p style="font-size: 1.9em; font-family: 'Dancing Script', cursive; color: var(--primary-color); line-height: 1.6;">
+          "En el mapa de mi vida,<br>tú eres el tesoro<br>que nunca supe<br>que estaba buscando."
+        </p>
+        <div style="margin-top: 30px; font-size: 2.5em;">🗺️💎</div>
+      </div>
+    </div>
+
+    <!-- HOJA 3 -->
+    <div class="sheet" id="s3">
+      <div class="face">
+        <div class="corner-decoration corner-tl"></div>
+        <div class="corner-decoration corner-tr"></div>
+        <img class="illustration" src="pucca.gif" alt="Pucca">
+        <p style="font-family: 'Dancing Script', cursive; font-size: 1.7em; color: var(--secondary-color); margin-bottom: 15px;">
+           "Eres mi paz en días de tormenta..."
+        </p>
+        <p>Como el primer sorbo de ☕<br>en una mañana fría,<br>así de necesaria eres<br>para mi existencia.</p>
+      </div>
+      <div class="face back">
+        <p class="quote" style="border-left-color: var(--secondary-color);">"El amor verdadero<br>no es perfecto...<br>es simplemente<br>el refugio perfecto<br>para dos almas imperfectas."</p>
+        <div style="margin-top: 20px; font-size: 2.5em;">🤍🥹</div>
+      </div>
+    </div>
+
+    <!-- HOJA 4 -->
+    <div class="sheet" id="s4">
+      <div class="face">
+        <div class="corner-decoration corner-bl"></div>
+        <div class="corner-decoration corner-br"></div>
+        <img class="illustration" src="garu.gif" alt="Garu">
+        <p style="font-family: 'Dancing Script', cursive; font-size: 1.7em; color: var(--secondary-color); margin-bottom: 15px;">
+          "En tu mirada<br>encuentro mi hogar..."
+        </p>
+        <p>No importa el silencio,<br>no importa la distancia...<br>mi corazón siempre sabe<br>exactamente dónde estás.</p>
+      </div>
+      <div class="face back">
+        <p style="font-size: 1.8em; font-style: italic; color: #555; line-height: 1.8;">
+          "Hay silencios que dicen más<br>que mil palabras...<br>y el nuestro habla<br>de amor eterno."
+        </p>
+        <div style="margin-top: 30px; font-size: 3em;">🌙✨</div>
+      </div>
+    </div>
+
+    <!-- HOJA 5 -->
+    <div class="sheet" id="s5">
+      <div class="face">
+        <div class="corner-decoration corner-tl"></div>
+        <div class="corner-decoration corner-br"></div>
+        <img class="illustration" src="pochaccoenamorado.gif" alt="Pochacco">
+        <p style="font-family: 'Dancing Script', cursive; font-size: 1.6em; color: var(--secondary-color); margin-bottom: 15px;">
+          "Caminemos juntos,<br>sin prisa pero sin pausa..."
+        </p>
+        <p>Cada paso es una aventura,<br>cada risa un tesoro guardado,<br>cada momento una página<br>de nuestro libro infinito.</p>
+      </div>
+      <div class="face back">
+        <img class="illustration" src="pochaccojugueton.gif" alt="Pochacco feliz">
+        <p style="font-family: 'Dancing Script', cursive; font-size: 1.9em; color: var(--primary-color);">
+          "La felicidad no es el destino...<br>es el camino<br>que pinto contigo<br>paso a paso."
+        </p>
+      </div>
+    </div>
+
+    <!-- HOJA 6 -->
+    <div class="sheet" id="s6">
+      <div class="face">
+        <div class="corner-decoration corner-tl"></div>
+        <div class="corner-decoration corner-tr"></div>
+        <div class="corner-decoration corner-bl"></div>
+        <div class="corner-decoration corner-br"></div>
+        <p class="quote" style="font-size: 1.3em;">"Prometo ser tu compañero<br>en la aventura más hermosa:<br>la vida misma."</p>
+        <p style="font-size: 1.4em; line-height: 2;">
+          Te amare cada dia,<br>
+          te esperare siempre,<br>
+          te extrañare...<br>
+          y cada instante<br>con amor incondicional.
+        </p>
+      </div>
+      <div class="face back">
+        <p style="font-family: 'Dancing Script', cursive; font-size: 2.1em; color: var(--primary-color); line-height: 1.5;">
+          "No necesito un final feliz...<br>necesito un infinito<br>a tu lado."
+        </p>
+        <div style="margin-top: 40px; font-size: 4em; animation: heartbeat 1.5s infinite;">💜</div>
+      </div>
+    </div>
+
+    <!-- HOJA 7: FINAL -->
+    <div class="sheet" id="s7">
+      <div class="face final-page glow">
+        <div class="corner-decoration corner-tl"></div>
+        <div class="corner-decoration corner-tr"></div>
+        <div class="corner-decoration corner-bl"></div>
+        <div class="corner-decoration corner-br"></div>
+        <p class="final-message" id="typingText"></p>
+        <p style="margin-top: 30px; font-size: 1.25em; color: #666; font-style: italic;">
+          Esta historia no tiene final...<br>
+          porque cada día contigo<br>es un nuevo comienzo.
+        </p>
+        <div style="margin-top: 35px; font-size: 2.5em; letter-spacing: 10px;">
+          <span style="display: inline-block; animation: heartbeat 1.5s infinite 0s;">💓</span>
+          <span style="display: inline-block; animation: heartbeat 1.5s infinite 0.3s;">✨</span>
+          <span style="display: inline-block; animation: heartbeat 1.5s infinite 0.6s;">💓</span>
+        </div>
+        <p style="margin-top: 35px; font-family: 'Dancing Script', cursive; font-size: 2.2em; color: var(--text-dark);">
+          Siempre tuyo,<br>Fabián
+        </p>
+      </div>
+      <div class="face back" style="background: linear-gradient(135deg, #1b2735 0%, #090a0f 100%) !important; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid rgba(155, 124, 182, 0.3);">
+        <div style="color: white; text-align: center; padding: 40px;">
+          <div style="font-size: 5em; margin-bottom: 30px; animation: heartbeat 2s infinite; filter: drop-shadow(0 0 20px rgba(155, 124, 182, 0.8));">🔓</div>
+          <h2 style="color: #b8a0d0; font-size: 3em; margin-bottom: 25px; text-shadow: 0 0 20px rgba(155, 124, 182, 0.5);">Libro Permanentemente Abierto</h2>
+          <p style="color: rgba(255,255,255,0.9); font-size: 1.4em; line-height: 1.8; max-width: 80%; margin: 0 auto; font-family: 'Cormorant Garamond', serif;">
+            Las historias de verdad<br>no se cierran...<br>se viven eternamente<br>en el corazón.
+          </p>
+          <div style="margin-top: 50px; font-size: 6em; filter: drop-shadow(0 0 30px rgba(155, 124, 182, 0.8)); animation: heartbeat 2s infinite;">
+            💜
+          </div>
+          <p style="margin-top: 40px; font-family: 'Dancing Script', cursive; font-size: 2.2em; color: #b8a0d0; text-shadow: 0 0 15px rgba(155, 124, 182, 0.5);">
+            Sammy & Fabián<br>
+            <span style="font-size: 0.7em; font-family: 'Cormorant Garamond', serif; color: rgba(255,255,255,0.7);">Por siempre</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="arrow" id="prev" style="display: none;">‹</div>
+<div class="arrow" id="next">›</div>
+<div class="page-indicator" id="pageIndicator">Página 1 de 7</div>
+
+<script>
+// Generar estrellas dinámicas
+function createStars() {
+  const container = document.getElementById('starsContainer');
+  const starCount = 200;
+  
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    const size = Math.random() * 3 + 1;
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+    star.style.setProperty('--opacity', Math.random() * 0.7 + 0.3);
+    star.style.animationDelay = Math.random() * 5 + 's';
+    container.appendChild(star);
+  }
+}
+
+createStars();
+
+// Crear estrellas fugaces aleatoriamente
+function createShootingStar() {
+  const shootingStar = document.createElement('div');
+  shootingStar.className = 'shooting-star';
+  shootingStar.style.top = Math.random() * 50 + '%';
+  shootingStar.style.left = Math.random() * 50 + '%';
+  shootingStar.style.animationDelay = Math.random() * 5 + 's';
+  document.body.appendChild(shootingStar);
+  
+  setTimeout(() => shootingStar.remove(), 3000);
+}
+
+setInterval(createShootingStar, 4000);
+
+// Floating hearts
+const heartEmojis = ['💗', '💖', '💕', '✨', '🌸', '🤍', '💫', '🌙', '💜'];
+
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.classList.add('heart');
+  heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.animationDuration = (Math.random() * 6 + 10) + 's';
+  heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
+  heart.style.opacity = Math.random() * 0.4 + 0.2;
+  document.getElementById('heartsContainer').appendChild(heart);
+  
+  setTimeout(() => heart.remove(), 16000);
+}
+
+setInterval(createHeart, 800);
+
+// Start Application
+function startApp() {
+  const overlay = document.getElementById('overlay');
+  const scene = document.getElementById('mainScene');
+  const music = document.getElementById('bgMusic');
+
+  overlay.style.opacity = '0';
+  overlay.style.visibility = 'hidden';
+  
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    scene.style.display = 'flex';
+    music.volume = 0.4;
+    music.play().catch(e => console.log("Audio play prevented"));
+  }, 1500);
+}
+
+// Book Logic
+const sheets = [...document.querySelectorAll(".sheet")];
+const prevBtn = document.getElementById("prev");
+const nextBtn = document.getElementById("next");
+const pageIndicator = document.getElementById("pageIndicator");
+const sound = document.getElementById("flipSound");
+
+let current = 0;
+const totalSheets = sheets.length;
+const loveMessages = [
+  "Te amo más allá de las palabras...",
+  "Eres mi infinito favorito...",
+  "Contigo, siempre...",
+  "Mi corazón es tuyo...",
+  "Para siempre no es suficiente..."
+];
+
+function updateZIndex() {
+  sheets.forEach((sheet, index) => {
+    if (index < current) {
+      sheet.style.zIndex = index + 1;
+    } else {
+      sheet.style.zIndex = totalSheets - index;
+    }
+  });
+  pageIndicator.textContent = `Página ${current + 1} de ${totalSheets}`;
+}
+
+updateZIndex();
+
+// Typing Effect
+let typeIndex = 0;
+let currentMessage = "";
+
+function typeWriter() {
+  currentMessage = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+  const element = document.getElementById("typingText");
+  element.innerHTML = "";
+  typeIndex = 0;
+  
+  function type() {
+    if (typeIndex < currentMessage.length) {
+      element.innerHTML += currentMessage.charAt(typeIndex);
+      typeIndex++;
+      setTimeout(type, 100);
+    }
+  }
+  type();
+}
+
+nextBtn.onclick = () => {
+  if (current < totalSheets - 1) {
+    sheets[current].classList.add("flip");
+    current++;
+    updateZIndex();
+    
+    if(sound.src) {
+      sound.currentTime = 0;
+      sound.play().catch(()=>{});
+    }
+    
+    prevBtn.style.display = "flex";
+    
+    if (current === totalSheets - 1) {
+      nextBtn.style.display = "none";
+      setTimeout(typeWriter, 800);
+    }
+  }
+};
+
+prevBtn.onclick = () => {
+  if (current > 0) {
+    current--;
+    sheets[current].classList.remove("flip");
+    updateZIndex();
+    
+    if(sound.src) {
+      sound.currentTime = 0;
+      sound.play().catch(()=>{});
+    }
+    
+    nextBtn.style.display = "flex";
+    if (current === 0) prevBtn.style.display = "none";
+  }
+};
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') nextBtn.click();
+  if (e.key === 'ArrowLeft') prevBtn.click();
+});
+
+// Prevent closing
+window.addEventListener('beforeunload', (e) => {
+  if (current === totalSheets - 1) {
+    e.preventDefault();
+    e.returnValue = 'Nuestro libro nunca se cierra... 💜';
+  }
+});
+</script>
+
+</body>
+</html>
